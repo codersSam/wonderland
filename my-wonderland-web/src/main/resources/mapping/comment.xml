@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.senhua.my.wonderland.web.dao.CommentMapper">
+
+    <select id="selectAll" resultMap="commentMap">
+    SELECT c.id,c.children,c.con_id,c.com_id,c.by_id,c.upvpte,c.comm_time,u.id AS uid,
+        u.email,u.password,u.nick_name,u.phone,u.state,u.img_url,u.enable
+    FROM COMMENT c USER u WHERE con_id = #{cid} and c.com_id = u.id order by c.comm_time desc
+    </select>
+
+    <resultMap id="commentMap" type="com.senhua.my.wonderland.web.entity.Comment">
+        <id property="id" column="id"></id>
+        <result property="children" column="children"></result>
+        <result property="conId" column="con_id"></result>
+        <result property="comId" column="com_id"></result>
+        <result property="byId" column="by_id"></result>
+        <result property="upvote" column="upvote"></result>
+        <result property="commTime" column="comm_time"></result>
+        <result property="comContent" column="com_content"></result>
+        <!-- property 表示Comment中的属性； column 表示表中的列名 -->
+        <association property="user" javaType="User">
+            <id column="uid" property="id"></id>
+            <result column="email" property="email"></result>
+            <result column="password" property="password"></result>
+            <result column="nick_name" property="nickName"></result>
+            <result column="phone" property="phone"></result>
+            <result column="state" property="state"></result>
+            <result column="img_url" property="imgUrl"></result>
+            <result column="enable" property="enable"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertComment" parameterType="comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT into comment(id, con_id, com_id, by_id, com_content, upvote, comm_time, children)
+        values (#{id}, #{conId}, #{comId}, #{byId}, #{comContent}, #{upvote}, #{commTime}, #{children})
+    </insert>
+
+    <select id="findAllFirstComment" resultMap="firstCommentMap">
+        select c.id,c.children,c.con_id,c.com_id,c.by_id,c.upvote,c.comm_time,c.com_content,
+          u.id as uid,u.email,u.password,u.nick_name,u.phone,u.state,u.img_url,u.enable
+        FROM comment c ,user u where con_id = #{cid} and by_id is null and c.com_id = u.id order by c.comm_time ASC
+    </select>
+
+    <resultMap id="firstCommentMap" type="com.senhua.my.wonderland.web.entity.Comment">
+        <id property="id" column="id"></id>
+        <result property="children" column="children"></result>
+        <result property="conId" column="con_id"></result>
+        <result property="comId" column="com_id"></result>
+        <result property="byId" column="by_id"></result>
+        <result property="upvote" column="upvote"></result>
+        <result property="commTime" column="comm_time"></result>
+        <result property="comContent" column="com_content"></result>
+        <association property="user" javaType="User">
+            <id column="uid" property="id"></id>
+            <result column="email" property="email"></result>
+            <result column="password" property="password"></result>
+            <result column="nick_name" property="nickName"></result>
+            <result column="phone" property="phone"></result>
+            <result column="state" property="state"></result>
+            <result column="img_url" property="imgUrl"></result>
+            <result column="enable" property="enable"></result>
+        </association>
+    </resultMap>
+
+    <!--查询所有子评论-->
+    <select id="findAllChildrenComment" resultMap="childCommentMap">
+        SELECT c.id,c.children,c.con_id,c.com_id,c.by_id,c.upvote,c.comm_time,c.com_content,u.id AS uid,
+        u.email,u.password,u.nick_name,u.phone,u.state,u.img_url,u.enable
+        FROM  comment c,user u WHERE con_id = #{cid}
+        <if test="children != null and children != ''">
+            AND c.id in(${children})
+        </if>
+        and c.com_id = u.id ORDER by c.comm_time ASC
+
+    </select>
+
+    <resultMap id="childCommentMap" type="com.senhua.my.wonderland.web.entity.Comment">
+        <id property="id" column="id"></id>
+        <result property="conId" column="con_id"></result>
+        <result property="comId" column="com_id"></result>
+        <result property="byId" column="by_id" />
+        <result property="upvote" column="upvote" />
+        <result property="commTime" column="comm_time" />
+        <result property="comContent" column="com_content" />
+        <!-- property 表示wang.dreamland.www.entity.Comment中的属性； column 表示表中的列名 -->
+        <association property="user" javaType="User">
+            <id column="uid" property="id" />
+            <result column="email" property="email" />
+            <result column="password" property="password" />
+            <result column="nick_name" property="nickName" />
+            <result column="phone" property="phone" />
+            <result column="state" property="state" />
+            <result column="img_url" property="imgUrl" />
+            <result column="enable" property="enable" />
+        </association>
+    </resultMap>
+
+
+
+
+</mapper>
