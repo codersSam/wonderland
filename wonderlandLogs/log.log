@@ -1,0 +1,3 @@
+[INFO][main][2019-07-22 16:37:08][com.senhua.my.wonderland.web.mail.SendEmail] - Send Email Exception:Illegal address
+[INFO][main][2019-07-22 16:37:39][com.senhua.my.wonderland.web.mail.SendEmail] - send validateCode to 1139140536@qq.com
+[INFO][main][2019-07-22 18:38:17][com.senhua.my.wonderland.web.mail.SendEmail] - send validateCode to 1139140536@qq.com

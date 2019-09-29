@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.senhua.my.wonderland.web.dao.RoleMapper">
+    <select id="findByUid" resultMap="roleListMap">
+        SELECT id,role_name,role_value,enabled
+        FROM role WHERE
+        id IN (SELECT r.r_id FROM user u ,role_user r
+        WHERE u.id = r.u_id AND r.u_id = #{uid}) AND enabled = 1
+    </select>
+
+    <resultMap id="roleListMap" type="com.senhua.my.wonderland.web.entity.Role">
+        <id property="id" column="id"></id>
+        <result property="roleName" column="role_name"></result>
+        <result property="roleValue" column="role_value"></result>
+        <result property="enabled" column="enabled"></result>
+    </resultMap>
+</mapper>

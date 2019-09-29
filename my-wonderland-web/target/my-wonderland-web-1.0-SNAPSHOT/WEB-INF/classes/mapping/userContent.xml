@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.senhua.my.wonderland.web.dao.UserContentMapper">
+    <select id="findCategoryByUid" resultMap="categoryMap">
+        SELECT category,count(1) as num FROM user_content
+        where u_id = #{uid} AND personal = '0' GROUP BY category
+        ORDER BY  num DESC
+    </select>
+
+    <resultMap id="categoryMap" type="com.senhua.my.wonderland.web.entity.UserContent">
+        <id property="id" column="id"></id>
+        <result property="category" column="category"></result>
+        <result property="num" column="num"></result>
+    </resultMap>
+
+    <insert id="insertContent" parameterType="userContent" useGeneratedKeys="true" keyProperty="id">
+          INSERT  INTO user_content(id,u_id,title,category,content,
+          personal,rpt_time,img_url,nick_name,upvote,downvote,comment_num)
+          VALUES (#{id},#{uId},#{title},#{category},#{content},#{personal},#{rptTime},#{imgUrl},
+          #{nickName},#{upvote},#{downvote},#{commentNum})
+    </insert>
+
+    <select id="findByJoin" resultMap="joinMap">
+        select ul.id,ul.u_id,ul.title,ul.category,ul.personal,ul.rpt_time,
+        ul.upvote,ul.downvote,ul.comment_num,ul.content,u2.nick_Name nickName,
+        u2.img_url imgUrl
+        FROM user_content ul LEFT JOIN user u2
+        ON ul.u_id = u2.id
+        <where>
+            <choose>
+                <when test="id != null and id!= ''">
+                    ul.id = #{id}
+                </when>
+                <otherwise>
+                    <if test="personal == null or personal ==''">
+                          ul.personal = '0'
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="uId != null and uId !=''">
+                and ul.u_id = #{uId}
+            </if>
+        </where>
+
+        ORDER BY ul.rpt_time DESC
+    </select>
+
+    <resultMap id="joinMap" type="com.senhua.my.wonderland.web.entity.UserContent">
+        <id property="id" column="id" />
+        <result property="uId" column="u_id" />
+        <result property="title" column="title" />
+        <result property="category" column="category" />
+        <result property="personal" column="personal" />
+        <result property="rptTime" column="rpt_time" />
+        <result property="imgUrl" column="img_url" />
+        <result property="nickName" column="nick_name" />
+        <result property="upvote" column="upvote" />
+        <result property="downvote" column="downvote" />
+        <result property="commentNum" column="comment_num" />
+        <result property="content" column="content" />
+    </resultMap>
+
+</mapper>
