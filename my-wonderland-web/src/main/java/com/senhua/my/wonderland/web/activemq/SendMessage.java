@@ -10,8 +10,8 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
 public class SendMessage {
-	private static String accessKeyId = "LTAIoz15GcdSqw3y";//你的accessKeyId,参考本文档步骤2
-	private static String accessKeySecret = "LdoUN9Hfe1foOdZYstocRPEHSSm9Bw";//你的accessKeySecret，参考本文档步骤2
+	private static String accessKeyId = "";//你的accessKeyId,参考本文档步骤2
+	private static String accessKeySecret = "";//你的accessKeySecret，参考本文档步骤2
 	private static String setSignName = "wonderland";
 	private static String dayutemplateCode = "SMS_171192878";
 
