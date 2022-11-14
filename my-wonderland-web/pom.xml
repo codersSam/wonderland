@@ -58,7 +58,7 @@
         <maven.complier.target>1.7</maven.complier.target>
 
         <!--spring版本号-->
-        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.version>4.2.7.RELEASE</spring.version>
 
         <!--mybatis版本号-->
         <mybatis.version>3.2.8</mybatis.version>
